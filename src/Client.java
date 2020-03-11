@@ -1,8 +1,10 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -52,7 +54,9 @@ public class Client {
 	static String username = "";
 	static String password = "";
 	Draw draw = new Draw();
-
+	 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+     double width = screenSize.getWidth()/2;
+     double height = screenSize.getHeight()/2;
 	public static void main(String[] args) {
 
 
@@ -61,8 +65,11 @@ public class Client {
 	}
 
 	public void LogginMenu() {
-		clientFrame = new JFrame("TeamChat");
-		clientFrame.setSize(900, 600);
+		clientFrame = new JFrame("Chat");
+       
+		//clientFrame.setSize((int)Math.round(width), (int)Math.round(height));
+		clientFrame.setSize(900,600);
+		clientFrame.setLocationRelativeTo(null);
 		clientFrame.setResizable(false);
 
 		textArea_Messages = new JTextArea();
@@ -92,7 +99,8 @@ public class Client {
 		
 		scrollPane_OnlineClients = new JScrollPane(OnlineClients);
 		scrollPane_OnlineClients.setBounds(755, 5, 100, 300);
-		
+		scrollPane_OnlineClients.setBackground(new Color(51,56,66));
+		scrollPane_OnlineClients.setForeground(Color.white.darker());
 		scrollPane_OnlineClients.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane_OnlineClients.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane_OnlineClients.setVisible(false);
@@ -101,7 +109,7 @@ public class Client {
 		}
 
 		Login = new JButton("Login");
-		Login.setBounds(300, 400, 200, 50);
+		Login.setBounds(300+50, 400, 200, 50);
 		Login.setBorderPainted(false);
 		Login.setFocusPainted(false);
 		Login.addMouseListener(new MouseListener() {
@@ -129,12 +137,17 @@ public class Client {
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-
+				Login.setBackground(new Color(51,56,66));
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-
+				
+				if(UserName.getText().length() > 0&&Passwort.getPassword().length > 0){
+					Login.setBackground(Color.darkGray);
+				}else{
+					Login.setBackground(Color.RED.darker());
+				}
 			}
 
 			@Override
@@ -142,26 +155,31 @@ public class Client {
 
 			}
 		});
-
+		Login.setForeground(Color.white.darker());
+		Login.setBackground(new Color(51,56,66));
 		Login.setVisible(true);
 		UserName = new JTextField("");
-		UserName.setBounds(250, 200, 300, 50);
+		UserName.setBounds(250+50, 200, 300, 50);
 		UserName.setEditable(true);
-	
+		UserName.setBackground(new Color(51,56,66));
+		UserName.setBorder(null);
+		UserName.setForeground(Color.white.darker());
 
 		UserName.setVisible(true);
 		clientFrame.add(UserName);
 		Passwort = new JPasswordField("");
-		Passwort.setBounds(250, 255, 300, 50);
+		Passwort.setBounds(250+50, 255, 300, 50);
 		Passwort.setEditable(true);
-	
-
+		Passwort.setBackground(new Color(51,56,66));
+		Passwort.setForeground(Color.white.darker());
+		Passwort.setBorder(null);
 		Passwort.setVisible(true);
 		clientFrame.add(Login);
 		clientFrame.add(Passwort);
 
-		draw.setBounds(0, 0, 800, 600);
+		draw.setBounds(0, 0, 900, 600);
 		draw.setVisible(true);
+
 
 		clientFrame.add(scrollPane_Messages);
 		clientFrame.add(scrollPane_OnlineClients);
@@ -273,19 +291,50 @@ public class Client {
 								OnlineClients.append("");
 								loggedin = true;
 								failed = false;
+								//TODO ALLES RICHTIG MACHEN
+								textField_Username.setBackground(new Color(51,56,66));
+								textField_Username.setForeground(Color.white.darker());
+								textField_Username.setBorder(null);
 								textField_Username.setText(username);
 								textField_Username.setVisible(true);
+
+								scrollPane_Messages.setBackground(new Color(51,56,66));
+								scrollPane_Messages.setForeground(Color.white.darker());
+								scrollPane_Messages.setBorder(null);
 								scrollPane_Messages.setVisible(true);
+								
+
+								scrollPane_OnlineClients.setBackground(new Color(51,56,66));
+								scrollPane_OnlineClients.setForeground(Color.white.darker());
+								scrollPane_OnlineClients.setBorder(null);
 								scrollPane_OnlineClients.setVisible(true);
+								
+
+								textField_ClientMessage.setBackground(new Color(51,56,66));
+								textField_ClientMessage.setForeground(Color.white.darker());
+								textField_ClientMessage.setBorder(null);
 								textField_ClientMessage.setVisible(true);
+								
+
+								textArea_Messages.setBackground(new Color(51,56,66));
+								textArea_Messages.setForeground(Color.white.darker());
+								textArea_Messages.setBorder(null);
 								textArea_Messages.setVisible(true);
+								
+								
+
+								OnlineClients.setBackground(new Color(51,56,66));
+								OnlineClients.setForeground(Color.white.darker());
+								OnlineClients.setBorder(null);
 								OnlineClients.setVisible(true);
+								
 								Login.setVisible(false);
 								UserName.setVisible(false);
 								Passwort.setVisible(false);
-
-								clientFrame.setBackground(Color.blue);
-								draw.setVisible(false);
+								
+								
+									
+								//draw.setVisible(false);
 	
 												
 							}else {
@@ -328,20 +377,20 @@ public class Client {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setColor(new Color(0, 120, 200, 150));
-			g.fillRect(0, 0, 800, 600);
-			g.setColor(Color.BLACK);
-			g.drawString("Username: ", 180, 230);
-			g.drawString("Password: ", 180, 285);
+			g.setColor(new Color(40,44,52));
+			g.fillRect(0, 0, 900, 600);
+			g.setColor(Color.white.darker());
+			g.drawString("Username: ", 180+50, 230);
+			g.drawString("Password: ", 180+50, 285);
 			if (failed) {
-				g.setColor(Color.RED);
+				g.setColor(Color.red);
 				g.setFont(new Font("IMPACT", Font.BOLD, 32));
-				g.drawString("Loggin Failed", 300, 180);
+				g.drawString("Wrong Login!", 260, 180);
 			}
 			if (error) {
-				g.setColor(Color.RED);
+				g.setColor(Color.red);
 				g.setFont(new Font("IMPACT", Font.BOLD, 32));
-				g.drawString("ERROR", 350, 180);
+				g.drawString("Could not connect to Server!", 260, 180);
 			}
 			repaint();
 		}
