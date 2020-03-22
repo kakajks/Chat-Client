@@ -1,12 +1,16 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -25,10 +29,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.Border;
 
 public class Client {
 
-	JFrame clientFrame;
+	public static JFrame clientFrame;
 	JTextArea textArea_Messages;
 	JTextField textField_ClientMessage;
 	JTextField textField_Username;
@@ -54,9 +59,9 @@ public class Client {
 	static String username = "";
 	static String password = "";
 	Draw draw = new Draw();
-	 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-     double width = screenSize.getWidth()/2;
-     double height = screenSize.getHeight()/2;
+	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+   public static int width = (int)Math.round(screenSize.getWidth()/2);
+   public static int height = (int)Math.round(screenSize.getHeight()/1.8);
 	public static void main(String[] args) {
 
 
@@ -68,22 +73,22 @@ public class Client {
 		clientFrame = new JFrame("Chat");
        
 		//clientFrame.setSize((int)Math.round(width), (int)Math.round(height));
-		clientFrame.setSize(900,600);
+		clientFrame.setSize(width,height);
 		clientFrame.setLocationRelativeTo(null);
-		clientFrame.setResizable(false);
-
+		clientFrame.setResizable(true);
+		
 		textArea_Messages = new JTextArea();
 		textArea_Messages.setEditable(false);
-		textArea_Messages.setBounds(50, 5, 700, 500);
+		textArea_Messages.setBounds(50, 5, 700, 500);//TODO DYNAMISCH
 		textArea_Messages.setVisible(false);
 		textField_ClientMessage = new JTextField(38);
 		textField_ClientMessage.addKeyListener(new SendPressEnterListener());
-		textField_ClientMessage.setBounds(170, 510, 580, 22);
+		textField_ClientMessage.setBounds(170, clientFrame.getHeight()-150+5+10, clientFrame.getWidth()-200-120, 22);
 		textField_ClientMessage.setVisible(false);
 
 		textField_Username = new JTextField(10);
 		textField_Username.setEditable(false);
-		textField_Username.setBounds(50, 510, 115, 22);
+		textField_Username.setBounds(50, 510, 115, 22);//TODO DYNAMSICH
 		textField_Username.setText(username);
 		textField_Username.setVisible(false);
 		OnlineClients = new JTextArea();
@@ -91,14 +96,13 @@ public class Client {
 		OnlineClients.setBounds(755, 5, 100, 300);
 		OnlineClients.setVisible(false);
 		scrollPane_Messages = new JScrollPane(textArea_Messages);
-		scrollPane_Messages.setBounds(50, 5, 700, 500);
-
+		scrollPane_Messages.setBounds(50, 5, clientFrame.getWidth()-200, clientFrame.getHeight()-150);
 		scrollPane_Messages.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane_Messages.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane_Messages.setVisible(false);
 		
 		scrollPane_OnlineClients = new JScrollPane(OnlineClients);
-		scrollPane_OnlineClients.setBounds(755, 5, 100, 300);
+		scrollPane_OnlineClients.setBounds(clientFrame.getWidth()-135, 5, 100, clientFrame.getHeight()/2-30);
 		scrollPane_OnlineClients.setBackground(new Color(51,56,66));
 		scrollPane_OnlineClients.setForeground(Color.white.darker());
 		scrollPane_OnlineClients.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -109,8 +113,8 @@ public class Client {
 		}
 
 		Login = new JButton("Login");
-		Login.setBounds(300+50, 400, 200, 50);
-		Login.setBorderPainted(false);
+		Login.setBounds(clientFrame.getWidth()/2-100, 400, 200, 50);
+		Login.setBorder(new RoundedBorder(10));
 		Login.setFocusPainted(false);
 		Login.addMouseListener(new MouseListener() {
 
@@ -138,6 +142,8 @@ public class Client {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				Login.setBackground(new Color(51,56,66));
+				Login.setBorder(new RoundedBorder(10));
+
 			}
 
 			@Override
@@ -145,7 +151,10 @@ public class Client {
 				
 				if(UserName.getText().length() > 0&&Passwort.getPassword().length > 0){
 					Login.setBackground(Color.darkGray);
+					Login.setBorder(new RoundedBorder(10));
+
 				}else{
+					Login.setBorder(new RoundedBorder(10, Color.red.brighter()));
 					Login.setBackground(Color.RED.darker());
 				}
 			}
@@ -159,20 +168,20 @@ public class Client {
 		Login.setBackground(new Color(51,56,66));
 		Login.setVisible(true);
 		UserName = new JTextField("");
-		UserName.setBounds(250+50, 200, 300, 50);
+		UserName.setBounds(clientFrame.getWidth()/2-150, 200, 300, 50);
 		UserName.setEditable(true);
 		UserName.setBackground(new Color(51,56,66));
-		UserName.setBorder(null);
+		UserName.setBorder(new RoundedBorder(10));
 		UserName.setForeground(Color.white.darker());
 
 		UserName.setVisible(true);
 		clientFrame.add(UserName);
 		Passwort = new JPasswordField("");
-		Passwort.setBounds(250+50, 255, 300, 50);
+		Passwort.setBounds(clientFrame.getWidth()/2-150, 255, 300, 50);
 		Passwort.setEditable(true);
 		Passwort.setBackground(new Color(51,56,66));
 		Passwort.setForeground(Color.white.darker());
-		Passwort.setBorder(null);
+		Passwort.setBorder(new RoundedBorder(10));
 		Passwort.setVisible(true);
 		clientFrame.add(Login);
 		clientFrame.add(Passwort);
@@ -188,6 +197,22 @@ public class Client {
 		clientFrame.add(draw);
 
 		clientFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		clientFrame.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				//Resize Event
+				scrollPane_OnlineClients.setBounds(clientFrame.getWidth()-135, 5, 100, clientFrame.getHeight()/2-30);
+				Passwort.setBounds(clientFrame.getWidth()/2-150, 255, 300, 50);
+				UserName.setBounds(clientFrame.getWidth()/2-150, 200, 300, 50);
+				scrollPane_Messages.setBounds(50, 5, clientFrame.getWidth()-200, clientFrame.getHeight()-150);
+				textField_ClientMessage.setBounds(170, clientFrame.getHeight()-150+5+10, clientFrame.getWidth()-200-120, 22);
+				textArea_Messages.setFont(new Font("Arial", Font.ITALIC, textArea_Messages.getHeight()/20));
+				
+
+				Login.setBounds(clientFrame.getWidth()/2-100, 400, 200, 50);
+
+			}
+		});
 		clientFrame.setVisible(true);
 	}
 
@@ -291,7 +316,6 @@ public class Client {
 								OnlineClients.append("");
 								loggedin = true;
 								failed = false;
-								//TODO ALLES RICHTIG MACHEN
 								textField_Username.setBackground(new Color(51,56,66));
 								textField_Username.setForeground(Color.white.darker());
 								textField_Username.setBorder(null);
@@ -378,22 +402,54 @@ public class Client {
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setColor(new Color(40,44,52));
-			g.fillRect(0, 0, 900, 600);
+			g.fillRect(0, 0, Client.clientFrame.getWidth(), Client.clientFrame.getHeight());
 			g.setColor(Color.white.darker());
-			g.drawString("Username: ", 180+50, 230);
-			g.drawString("Password: ", 180+50, 285);
-			if (failed) {
-				g.setColor(Color.red);
-				g.setFont(new Font("IMPACT", Font.BOLD, 32));
-				g.drawString("Wrong Login!", 260, 180);
-			}
-			if (error) {
-				g.setColor(Color.red);
-				g.setFont(new Font("IMPACT", Font.BOLD, 32));
-				g.drawString("Could not connect to Server!", 260, 180);
+			if(!loggedin) {			
+				g.drawString("Username: ", clientFrame.getWidth()/2-150-75, 230);
+				g.drawString("Password: ", clientFrame.getWidth()/2-150-75, 280);
+				if (failed) {
+					g.setColor(Color.red);
+					g.setFont(new Font("IMPACT", Font.BOLD, 32));
+					g.drawString("Wrong Login!", clientFrame.getWidth()/2-100, 180);
+				}
+				if (error) {
+					g.setColor(Color.red);
+					g.setFont(new Font("IMPACT", Font.BOLD, 32));
+					g.drawString("Could not connect to Server!", clientFrame.getWidth()/2-150-50, 180);
+				}
 			}
 			repaint();
 		}
 	}
+	private static class RoundedBorder implements Border {
 
+	    private int radius;
+	    private Color color;
+	    public RoundedBorder(int radius) {
+	        this.radius = radius;
+	        this.color = Color.white;
+		}
+	    public RoundedBorder(int radius, Color color) {
+	        this.radius = radius;
+	        this.color = color;
+		}
+	    
+	  
+	  
+
+	    public Insets getBorderInsets(Component c) {
+	        return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+	    }
+
+
+	    public boolean isBorderOpaque() {
+	        return true;
+	    }
+
+	    
+	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	    	g.setColor(color);
+	        g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+	    }
+	}
 }
