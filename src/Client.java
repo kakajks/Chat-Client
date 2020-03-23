@@ -52,7 +52,7 @@ public class Client {
 
 
 	public static int port = 333;
-	public static String ip = "localhost";
+	public static String ip = "devtimo.tk";
 	static boolean loggedin = false;
 	static boolean failed = false;
 	static boolean error = false;
@@ -79,7 +79,7 @@ public class Client {
 		
 		textArea_Messages = new JTextArea();
 		textArea_Messages.setEditable(false);
-		textArea_Messages.setBounds(50, 5, 700, 500);//TODO DYNAMISCH
+		textArea_Messages.setBounds(50, 5, 700, 500);
 		textArea_Messages.setVisible(false);
 		textField_ClientMessage = new JTextField(38);
 		textField_ClientMessage.addKeyListener(new SendPressEnterListener());
@@ -88,7 +88,7 @@ public class Client {
 
 		textField_Username = new JTextField(10);
 		textField_Username.setEditable(false);
-		textField_Username.setBounds(50, 510, 115, 22);//TODO DYNAMSICH
+		textField_Username.setBounds(50, 5+clientFrame.getHeight()-150, 115, 22);
 		textField_Username.setText(username);
 		textField_Username.setVisible(false);
 		OnlineClients = new JTextArea();
@@ -183,6 +183,11 @@ public class Client {
 		Passwort.setForeground(Color.white.darker());
 		Passwort.setBorder(new RoundedBorder(10));
 		Passwort.setVisible(true);
+		textField_ClientMessage.setBorder(new RoundedBorder(10));
+		scrollPane_Messages.setBorder(new RoundedBorder(10));
+		scrollPane_OnlineClients.setBorder(new RoundedBorder(10));
+		textField_Username.setBorder(new RoundedBorder(10));
+
 		clientFrame.add(Login);
 		clientFrame.add(Passwort);
 
@@ -205,10 +210,12 @@ public class Client {
 				Passwort.setBounds(clientFrame.getWidth()/2-150, 255, 300, 50);
 				UserName.setBounds(clientFrame.getWidth()/2-150, 200, 300, 50);
 				scrollPane_Messages.setBounds(50, 5, clientFrame.getWidth()-200, clientFrame.getHeight()-150);
-				textField_ClientMessage.setBounds(170, clientFrame.getHeight()-150+5+10, clientFrame.getWidth()-200-120, 22);
-				textArea_Messages.setFont(new Font("Arial", Font.ITALIC, textArea_Messages.getHeight()/20));
+				textField_ClientMessage.setBounds(170, clientFrame.getHeight()-150+5+10, clientFrame.getWidth()-200-120, 50);
+				textField_ClientMessage.setFont(new Font("IMPACT", Font.PLAIN, 24));
+				textArea_Messages.setFont(new Font("IMPACT", Font.PLAIN, scrollPane_Messages.getWidth()/50));
+				textField_Username.setBounds(50, clientFrame.getHeight()-150+5+10, scrollPane_Messages.getWidth()-textField_ClientMessage.getWidth()-10, 50);
+				textField_Username.setFont(new Font("IMPACT", Font.PLAIN, 24));
 				
-
 				Login.setBounds(clientFrame.getWidth()/2-100, 400, 200, 50);
 
 			}
@@ -318,25 +325,21 @@ public class Client {
 								failed = false;
 								textField_Username.setBackground(new Color(51,56,66));
 								textField_Username.setForeground(Color.white.darker());
-								textField_Username.setBorder(null);
 								textField_Username.setText(username);
 								textField_Username.setVisible(true);
 
 								scrollPane_Messages.setBackground(new Color(51,56,66));
 								scrollPane_Messages.setForeground(Color.white.darker());
-								scrollPane_Messages.setBorder(null);
 								scrollPane_Messages.setVisible(true);
 								
 
 								scrollPane_OnlineClients.setBackground(new Color(51,56,66));
 								scrollPane_OnlineClients.setForeground(Color.white.darker());
-								scrollPane_OnlineClients.setBorder(null);
 								scrollPane_OnlineClients.setVisible(true);
 								
 
 								textField_ClientMessage.setBackground(new Color(51,56,66));
 								textField_ClientMessage.setForeground(Color.white.darker());
-								textField_ClientMessage.setBorder(null);
 								textField_ClientMessage.setVisible(true);
 								
 
